@@ -108,4 +108,8 @@ io.on("connection", (socket) => {
   });
 });
 
+app.get("/", (req, res) => {
+    res.send("Server running");
+  });
+
 server.listen(5000, () => console.log("Server running on port 5000"));
