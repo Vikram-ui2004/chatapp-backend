@@ -12,10 +12,11 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000", // React Frontend URL
+    origin: ["https://chatapp-pearl-nine.vercel.app", "http://localhost:3000","http://localhost:3001"], 
     methods: ["GET", "POST"],
   },
 });
+
 
 app.use(cors());
 app.use(express.json());
@@ -38,7 +39,7 @@ const userSchema = new mongoose.Schema({
       const { username, password } = req.body;
   
       // Check if user already exists
-      const existingUser = await User.findOne({ username });
+      const existingUser = await User.findOne({ username: username.trim().toLowerCase() });
       if (existingUser) return res.status(400).json({ message: "Username already exists" });
   
       // Hash password before storing
@@ -107,7 +108,6 @@ io.on("connection", (socket) => {
     console.log(`❌ User Disconnected: ${socket.id}`);
   });
 });
-
 app.get("/", (req, res) => {
     res.send("Server running");
   });
